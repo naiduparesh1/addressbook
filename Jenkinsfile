@@ -1,11 +1,5 @@
 pipeline {
-    
-    tools {  
-        jdk   'JDK11'
-        maven 'usemaven'
-
-    }
-
+    agent any
 parameters {
         string(name: 'ENV', defaultValue: 'Test', description: 'Version to deploy')
 
@@ -18,7 +12,6 @@ parameters {
             steps {
                 echo 'compiling the java based code'
                 echo "compiling the ${params.ENV}"
-                sh 'mvn compile'
             }
         }
         stage('Unittest') {
@@ -29,7 +22,6 @@ parameters {
             }
             steps {
                 echo 'testing the code'
-                sh 'mvn test'
             }
         }
         stage('package') {
@@ -44,7 +36,6 @@ parameters {
             steps {
                 echo 'packaging the code'
                 echo "packaging version ${params.Appversion}"
-                sh 'mvn compile'
             }
         }
     }
