@@ -39,6 +39,8 @@ parameters {
             }
         }
         stage('package') {
+            agent any
+            
             input {
                 message "select the version?"
                 ok "version selected"
@@ -46,12 +48,17 @@ parameters {
                     choice(name: 'Appversion', choices: ['1.1', '1.2', '1.3'])
                 }
             }
-
-            steps {
-                echo 'packaging the code'
-                echo "packaging version ${params.Appversion}"
-                sh 'mvn compile'
+              
+            steps{
+                script{
+                sshagent(['deploy-server']){
+                echo"packaging the code"
+                sh "scp server-config.sh -o stricthostkeychecking=no ec2-user@172.31.26.81.sh:/home/ec2-user"
+                sh "ssh -o stricthostkeychecking=no ec2-user@172.31.26.81 'bash ~/server-config.sh'"
+                }
+                }
+            }
             }
         }
     }
-}
+
