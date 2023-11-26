@@ -11,7 +11,7 @@ parameters {
         stage('compile') {
             steps {
                 echo 'compiling the java based code'
-                echo 'compiling the ${params.ENV}'
+                echo "compiling the ${params.ENV}"
             }
         }
         stage('Unittest') {
