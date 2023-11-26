@@ -1,7 +1,6 @@
 pipeline {
     agent any
-    tools {
-        
+    tools {  
         'MyMaven', type: 'maven'
         'JDK11', type: 'jdk'
     }
