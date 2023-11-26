@@ -25,6 +25,14 @@ parameters {
             }
         }
         stage('package') {
+            input {
+                message "select the version?"
+                ok "version selected"
+                parameters {
+                    choice(name: 'Appversion', choices: ['1.1', '1.2', '1.3'])
+                }
+            }
+
             steps {
                 echo 'packaging the code'
                 echo "packaging version ${params.Appversion}"
