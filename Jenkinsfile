@@ -1,8 +1,9 @@
 pipeline {
     agent any
     tools {  
-        'MyMaven', type: 'maven'
-        'JDK11', type: 'jdk'
+        jdk "JDK11"
+        maven "MyMaven"
+
     }
 
 parameters {
