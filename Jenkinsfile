@@ -48,15 +48,14 @@ parameters {
                     choice(name: 'Appversion', choices: ['1.1', '1.2', '1.3'])
                 }
             }
-              
             steps{
-                script{
+            script{
                 sshagent(['deploy-server']){
                 echo"packaging the code"
-                sh "scp -o stricthostkeychecking=no server-config.sh ec2-user@172.31.26.81.sh:/home/ec2-user"
+                sh "scp -o stricthostkeychecking=no server-config.sh ec2-user@172.31.26.81:/home/ec2-user"
                 sh "ssh -o stricthostkeychecking=no ec2-user@172.31.26.81 'bash ~/server-config.sh'"
-                }
-                }
+            }
+            }
             }
             }
         }
