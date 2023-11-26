@@ -1,10 +1,11 @@
 pipeline {
     agent any
     tools {
-        'default', type: 'git'
+        
         'MyMaven', type: 'maven'
         'JDK11', type: 'jdk'
     }
+
 parameters {
         string(name: 'ENV', defaultValue: 'Test', description: 'Version to deploy')
 
