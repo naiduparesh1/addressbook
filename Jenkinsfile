@@ -31,6 +31,12 @@ parameters {
                 echo 'testing the code'
                 sh 'mvn test'
             }
+            post{
+                always {
+                    junit '/target/surefire-reports/*.xml'
+                }
+            }
+            }
         }
         stage('package') {
             input {
