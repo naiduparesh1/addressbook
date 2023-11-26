@@ -5,7 +5,7 @@ parameters {
 
         booleanParam(name: 'executetests', defaultValue: true, description: 'decide to run test case')
 
-        choice(name: 'CAppversion', choices: ['1.1', '1.2', '1.3'])
+        choice(name: 'Appversion', choices: ['1.1', '1.2', '1.3'])
     }
     stages {
         stage('compile') {
@@ -17,7 +17,7 @@ parameters {
         stage('Unittest') {
             when {
                 expression{
-                    params.executetests
+                    params.executetests == true
                 }
             }
             steps {
@@ -27,6 +27,7 @@ parameters {
         stage('package') {
             steps {
                 echo 'packaging the code'
+                echo "packaging version ${params.Appversion}"
             }
         }
     }
