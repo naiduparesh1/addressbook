@@ -2,9 +2,7 @@ pipeline {
     agent any
     tools {  
         jdk   'JDK11'
-        maven MyMaven
-
-    }
+        }
 
 parameters {
         string(name: 'ENV', defaultValue: 'Test', description: 'Version to deploy')
