@@ -1,4 +1,4 @@
-pipeline {
+pipeline { 
     agent any
     tools {  
         jdk   'JDK11'
@@ -19,7 +19,7 @@ parameters {
                 echo 'compiling the java based code'
                 echo "compiling the ${params.ENV}"
                 sh 'mvn compile'
-            }
+            } 
         }
         stage('Unittest') {
             when {
@@ -35,7 +35,7 @@ parameters {
                 always {
                     junit '/target/surefire-reports/*.xml'
                 }
-            }
+            
             }
         }
         stage('package') {
