@@ -53,7 +53,7 @@ parameters {
                 script{
                 sshagent(['deploy-server']){
                 echo"packaging the code"
-                sh "scp server-config.sh -o stricthostkeychecking=no ec2-user@172.31.26.81.sh:/home/ec2-user"
+                sh "scp -o stricthostkeychecking=no server-config.sh ec2-user@172.31.26.81.sh:/home/ec2-user"
                 sh "ssh -o stricthostkeychecking=no ec2-user@172.31.26.81 'bash ~/server-config.sh'"
                 }
                 }
