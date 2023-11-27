@@ -3,7 +3,7 @@ sudo yum install java-1.8.0-openjdk-devel -y
 sudo yum install git -y
 sudo you install maven -y
 
-if[ -d "addressbook" ]
+if [ -d "addressbook" ]
 then
 echo"repo is cloned"
 cd /home/ec2-user/adressbook
