@@ -9,7 +9,6 @@ echo"repo is cloned"
 cd /home/ec2-user/adressbook
 git pull origin master
 else
-
 git clone https://github.com/naiduparesh/addressbook.git
 fi
 cd /home/ec2-user/addressbook
