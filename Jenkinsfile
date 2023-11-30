@@ -21,7 +21,7 @@ parameters {
 
     stages {
         stage('compile') {
-            agent any
+            
             steps {
                 echo 'compiling the java based code'
                 echo "compiling the ${params.ENV}"
