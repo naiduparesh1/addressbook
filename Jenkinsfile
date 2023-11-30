@@ -15,12 +15,13 @@ parameters {
     }
     environment{
         BUILD_SERVER_IP = 'ec2-user@172.31.18.54'
-        DEPLOY_ SERVER_IP = 'ec2-user@172.31.26.81'
+        DEPLOY_SERVER_IP = 'ec2-user@172.31.26.81'
+        IMAGE_NAME = 'naiduparesh/demo'
     }
 
     stages {
         stage('compile') {
-            
+            agent any
             steps {
                 echo 'compiling the java based code'
                 echo "compiling the ${params.ENV}"
@@ -58,9 +59,10 @@ parameters {
             script{
                 sshagent(['node1']) {
                 echo"packaging the code"
+                withcredentials{[usernamePassword(credentialsid: 'docker-hub', passwordVariable : 'Wipro@2023, usernameVaraible : ''naiduparesh')]}
                 sh "ssh -o StrictHostKeyChecking=no ${BUILD_SERVER_IP} rm -Rf server-config.sh"
                 sh "scp -o StrictHostKeyChecking=no server-config.sh ${BUILD_SERVER_IP}:/home/ec2-user"
-                sh "ssh -o StrictHostKeyChecking=no ${BUILD_SERVER_IP} 'bash ~/server-config.sh'"
+                sh "ssh -o StrictHostKeyChecking=no ${BUILD_SERVER_IP} 'bash ~/server-config.sh ${IMAGE_NAME} ${BUILD_NUMBER}'"
                 sh "${BUILD_SERVER_IP} sudo docker login -u naiduparesh -p Wipro@2023"
                 sh "${BUILD_SERVER_IP} sudo docker push image"
             }
@@ -68,13 +70,15 @@ parameters {
             }
             }
             stage (Deploy){
+                agent any
                 steps{
                 script{
-                sh "ssh -o StrictHostKeyChecking=no ${DEPLOY_ SERVER_IP} sudo yum install docker -y"
-                sh "${DEPLOY_ SERVER_IP} systemctl start docker"
-                sh "${DEPLOY_ SERVER_IP} sudo docker login -u naiduparesh -p Wipro@2023"
-                sh "${DEPLOY_ SERVER_IP} sudo docker run -itd -P ab:tomdoc"
-            }
+                sshagent(['node1']) {
+                sh "ssh -o StrictHostKeyChecking=no ${DEPLOY_SERVER_IP} sudo yum install docker -y"
+                sh "${DEPLOY_SERVER_IP} systemctl start docker"
+                sh "${DEPLOY_SERVER_IP} sudo docker login -u naiduparesh -p Wipro@2023"
+                sh "${DEPLOY_SERVER_IP} sudo docker run -itd -P ${IMAGE_NAME}:${BUILD_NUMBER}"
+            }}
             }
             }
 
