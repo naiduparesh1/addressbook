@@ -1,8 +1,8 @@
 pipeline {
     agent none
     tools{
-        jdk 'myjava'
-        maven 'mymaven'
+        jdk 'JDK11'
+        maven 'usemaven'
     }
 
     parameters{
@@ -11,9 +11,9 @@ pipeline {
         choice(name:'APPVERSION',choices:['1.1','1.2','1.3'])
     }
     environment{
-        BUILD_SERVER_IP='ec2-user@172.31.46.168'
-        DEPLOY_SERVER_IP='ec2-user@172.31.46.239'
-        IMAGE_NAME='devopstrainer/java-mvn-privaterepos'
+        BUILD_SERVER_IP='ec2-user@172.31.26.81'
+        DEPLOY_SERVER_IP='ec2-user@172.31.18.54'
+        IMAGE_NAME='naiduparesh/demo'
     }
 
     stages {
@@ -42,7 +42,7 @@ pipeline {
                 }
             }
         }
-        stage('DOCKER_BUILD') {
+        stage('BUILD') {
             //  agent {
             //     // Specify the label or name of the Jenkins agent (slave node) where you want to run the package stage
             //     label 'linux_slave'
@@ -52,8 +52,8 @@ pipeline {
            
             steps{
             script{
-                sshagent(['build-server']) {
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                sshagent(['node1']) {
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'Wipro@2023', usernameVariable: 'naiduparesh')]) {
                     echo "Packaging the code"
                     sh "scp -o StrictHostKeyChecking=no server-config.sh  ${BUILD_SERVER_IP}:/home/ec2-user"
                     sh "ssh -o StrictHostKeyChecking=no ${BUILD_SERVER_IP} 'bash ~/server-config.sh ${IMAGE_NAME} ${BUILD_NUMBER}'"  
@@ -79,7 +79,7 @@ pipeline {
             steps{
                 script{
                 sshagent(['build-server']) {
-                withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'Wipro@2023', usernameVariable: 'naiduparesh')]) {
                 sh "ssh  -o StrictHostKeyChecking=no ${DEPLOY_SERVER_IP} sudo yum install docker -y"
                 sh "ssh  ${DEPLOY_SERVER_IP} sudo systemctl start docker"
                 sh "ssh  ${DEPLOY_SERVER_IP} sudo docker login -u ${USERNAME} -p ${PASSWORD}"
