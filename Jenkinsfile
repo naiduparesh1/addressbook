@@ -59,7 +59,6 @@ parameters {
                 sshagent(['node1']) {
                 echo"packaging the code"
                 withcredentials{[usernamePassword(credentialsid: 'docker-hub', passwordVariable : 'Wipro@2023', usernameVaraible : 'naiduparesh')]}
-                
                 sh "scp -o StrictHostKeyChecking=no server-config.sh ${BUILD_SERVER_IP}:/home/ec2-user"
                 sh "ssh -o StrictHostKeyChecking=no ${BUILD_SERVER_IP} 'bash ~/server-config.sh ${IMAGE_NAME} ${BUILD_NUMBER}'"
                 sh "${BUILD_SERVER_IP} sudo docker login -u naiduparesh -p Wipro@2023"
