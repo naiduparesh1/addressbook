@@ -3,6 +3,7 @@ pipeline {
     tools {  
         jdk   'JDK11'
         maven 'usemaven'
+        docker 'docker'
 
     }
 
