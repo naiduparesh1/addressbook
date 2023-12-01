@@ -12,9 +12,8 @@ cd /home/ec2-user/adressbook
 git pull origin master
 else
 git clone https://github.com/naiduparesh/addressbook.git
-fi
 cd /home/ec2-user/addressbook
 git checkout master
-
+fi
 #mvn package
 sudo docker build -t $1:$2 /home/ec2-user/addressbook
