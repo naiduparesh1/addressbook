@@ -43,11 +43,6 @@ pipeline {
             }
         }
         stage('BUILD') {
-            //  agent {
-            //     // Specify the label or name of the Jenkins agent (slave node) where you want to run the package stage
-            //     label 'linux_slave'
-            // }
-
             agent any       
            
             steps{
