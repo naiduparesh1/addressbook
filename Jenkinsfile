@@ -22,7 +22,7 @@ parameters {
 
     stages {
         stage('compile') {
-            agent any
+            
             steps {
                 echo 'compiling the java based code'
                 echo "compiling the ${params.ENV}"
@@ -30,7 +30,7 @@ parameters {
             } 
         }
         stage('Unittest') {
-           agent any
+           
             when {
                 expression{
                     params.executetests == true
@@ -48,7 +48,7 @@ parameters {
             }
         }
         stage('Build') {
-            agent any
+            
             input {
                 message "select the version?"
                 ok "version selected"
@@ -71,7 +71,7 @@ parameters {
             }
             }
             stage (Deploy){
-                agent any
+                
                 steps{
                 script{
                 sshagent(['node1']) {
