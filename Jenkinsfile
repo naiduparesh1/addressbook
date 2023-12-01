@@ -52,10 +52,8 @@ pipeline {
                     echo "Packaging the code"
                     sh "scp -o StrictHostKeyChecking=no server-config.sh  ${BUILD_SERVER_IP}:/home/ec2-user"
                     sh "ssh -o StrictHostKeyChecking=no ${BUILD_SERVER_IP} 'bash ~/server-config.sh ${IMAGE_NAME} ${BUILD_NUMBER}'"  
-                    sh "ssh ${BUILD_SERVER_IP} sudo docker login -u ${USERNAME} -p ${PASSWORD}"
-                    sh "ssh ${BUILD_SERVER_IP} sudo docker push ${IMAGE_NAME}:${BUILD_NUMBER}"
-                                   
-                    
+                    sh "ssh ${BUILD_SERVER_IP} sudo docker login -u naiduparesh -p Wipro@2023"
+                    sh "ssh ${BUILD_SERVER_IP} sudo docker push ${IMAGE_NAME}:${BUILD_NUMBER}"   
                 }
             }
             }
@@ -77,7 +75,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'Wipro@2023', usernameVariable: 'naiduparesh')]) {
                 sh "ssh  -o StrictHostKeyChecking=no ${DEPLOY_SERVER_IP} sudo yum install docker -y"
                 sh "ssh  ${DEPLOY_SERVER_IP} sudo systemctl start docker"
-                sh "ssh  ${DEPLOY_SERVER_IP} sudo docker login -u ${USERNAME} -p ${PASSWORD}"
+                sh "ssh  ${DEPLOY_SERVER_IP} sudo docker login -u -u naiduparesh -p Wipro@2023"
                 sh "ssh  ${DEPLOY_SERVER_IP} sudo docker run -itd -P ${IMAGE_NAME}:${BUILD_NUMBER}"
 
                 }
