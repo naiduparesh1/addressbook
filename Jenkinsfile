@@ -1,5 +1,5 @@
 pipeline { 
-    agent any
+    agent none
     tools {  
         jdk   'JDK11'
         maven 'usemaven'
@@ -21,7 +21,7 @@ parameters {
 
     stages {
         stage('compile') {
-            
+            agent any
             steps {
                 echo 'compiling the java based code'
                 echo "compiling the ${params.ENV}"
@@ -29,7 +29,7 @@ parameters {
             } 
         }
         stage('Unittest') {
-           
+           agent any
             when {
                 expression{
                     params.executetests == true
