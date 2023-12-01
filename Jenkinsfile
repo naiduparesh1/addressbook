@@ -52,17 +52,21 @@ parameters {
                 ok "version selected"
                 parameters {
                     choice(name: 'Appversion', choices: ['1.1', '1.2', '1.3'])
-                }
             }
-            steps{
+         }
+
+         steps{
             script{
                 sshagent(['node1']) {
                 echo"packaging the code"
-                withCredentials{[usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'Wipro@2023', usernameVaraible: 'naiduparesh')]}
+                withCredentials{[usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'Wipro@2023', usernameVaraible: 'naiduparesh')]}{
                 sh "scp -o StrictHostKeyChecking=no server-config.sh ${BUILD_SERVER_IP}:/home/ec2-user"
                 sh "ssh -o StrictHostKeyChecking=no ${BUILD_SERVER_IP} 'bash ~/server-config.sh ${IMAGE_NAME} ${BUILD_NUMBER}'"
-                sh "${BUILD_SERVER_IP} sudo docker login -u naiduparesh -p Wipro@2023"
+                sh "${BUILD_SERVER_IP} sudo docker login -u ${USERNAME} -p ${PASSWORD}"
                 sh "${BUILD_SERVER_IP} sudo docker push image"
+
+
+                }
             }
             }
             }
@@ -73,8 +77,8 @@ parameters {
                 script{
                 sshagent(['node1']) {
                 sh "ssh -o StrictHostKeyChecking=no ${DEPLOY_SERVER_IP} sudo yum install docker -y"
-                sh "${DEPLOY_SERVER_IP} systemctl start docker"
-                sh "${DEPLOY_SERVER_IP} sudo docker login -u naiduparesh -p Wipro@2023"
+                sh "${DEPLOY_SERVER_IP} sudo systemctl start docker"
+                sh "${DEPLOY_SERVER_IP} sudo docker login -u ${USERNAME} -p ${PASSWORD}"
                 sh "${DEPLOY_SERVER_IP} sudo docker run -itd -P ${IMAGE_NAME}:${BUILD_NUMBER}"
             }}
             }
