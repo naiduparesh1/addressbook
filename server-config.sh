@@ -8,7 +8,7 @@ sudo systemctl start docker
 if [ -d "addressbook" ]
 then
 echo "repo is cloned"
-cd /home/ec2-user/adressbook
+cd /home/ec2-user/addressbook
 git pull origin master
 else
 git clone https://github.com/naiduparesh/addressbook.git
