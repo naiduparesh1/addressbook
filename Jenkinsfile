@@ -78,7 +78,7 @@ pipeline {
              }
             steps{
                 script{
-                sshagent(['build-server']) {
+                sshagent(['node1']) {
                 withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'Wipro@2023', usernameVariable: 'naiduparesh')]) {
                 sh "ssh  -o StrictHostKeyChecking=no ${DEPLOY_SERVER_IP} sudo yum install docker -y"
                 sh "ssh  ${DEPLOY_SERVER_IP} sudo systemctl start docker"
